@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.1'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'groovy'
 }
 
 group = 'com.crypto.app'
@@ -9,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(23)
 	}
 }
 
@@ -18,11 +19,31 @@ repositories {
 }
 
 dependencies {
+	// Spring Spock test dependencies
+	testImplementation 'org.spockframework:spock-spring:2.4-M1-groovy-4.0'
+	implementation 'org.codehaus.gmavenplus:gmavenplus-plugin:4.1.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+	compileOnly 'org.projectlombok:lombok:1.18.36'
+	implementation 'org.springframework:spring-web:6.2.2'
+	// Spock test dependencies
+	testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
+	implementation 'org.apache.groovy:groovy-all:5.0.0-alpha-12'
+	implementation 'org.apache.groovy:groovy-test:5.0.0-alpha-12'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+
+}
+sourceSets {
+	main {
+	groovy{
+		include("**/*Spec.groovy")
+	}
+	}
 }
