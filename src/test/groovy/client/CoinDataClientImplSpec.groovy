@@ -1,0 +1,50 @@
+package client
+
+import com.crypto.app.tracker.client.CoinDataClient
+import com.crypto.app.tracker.client.impl.CoinDataClientImpl
+import com.crypto.app.tracker.models.CoinData
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.http.ResponseEntity
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.UriComponents
+import org.springframework.web.util.UriComponentsBuilder
+import spock.lang.Specification
+import org.springframework.http.HttpStatus
+
+import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_API_KEY
+import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_DATA_URL_PATH
+import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_EXCHANGE
+import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_HOST
+import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_SCHEME
+
+class CoinDataClientImplSpec extends  Specification {
+    def restTemplate;
+    def fixture
+
+    def setup(){
+
+        restTemplate = Mock(RestTemplate)
+        fixture = [restTemplate: restTemplate] as CoinDataClientImpl
+    }
+    def "the coinDataClient is called and returns CoinData"(){
+        given:
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        HttpEntity httpEntity  = new HttpEntity<>(headers);
+        def coinName = "DOGE"
+        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinData
+        def coinUrl = UriComponentsBuilder.newInstance()
+                .scheme(COIN_SCHEME).host(COIN_HOST).path(COIN_DATA_URL_PATH).queryParam("fsym",coinName).queryParam("e", COIN_EXCHANGE)
+                .queryParam("tsym","USD").queryParam("api_key", COIN_API_KEY).build().toUriString();
+
+        when:
+        def result = fixture.getCoinData(coinName)
+
+        then:
+
+       1 * restTemplate.exchange(coinUrl, HttpMethod.GET, httpEntity, CoinData.class) >> new ResponseEntity<>(coinData, HttpStatus.OK)
+        result == coinData
+    }
+}

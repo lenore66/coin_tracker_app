@@ -1,30 +1,45 @@
 package com.crypto.app.tracker.models;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import java.io.Serializable;
+
 @Data
 @Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoinData {
-    @JsonProperty("usd")
-    @JsonAlias("usd")
-    private Double usd;
-    @JsonProperty("usd_market_cap")
-    @JsonAlias("usd_market_cap")
-    private Double usdMarketCap;
-    @JsonProperty("usd_24h_vol")
-    @JsonAlias("usd_24h_vol")
-    private Double usd24hVolume;
-    @JsonProperty("usd_24h_change")
-    @JsonAlias("usd_24h_change")
-    private Double usd24hChange;
-    @JsonProperty("last_updated_at")
-    @JsonAlias("last_updated_at")
-    private  Double lastUpdated;
+public class CoinData implements Serializable {
+    @JsonProperty("FROMSYMBOL")
+    public String fromSymbol;
+    @JsonProperty("TOSYMBOL")
+    public String toSymbol;
+
+    @JsonProperty("FLAGS")
+    public String flags;
+    @JsonProperty("PRICE")
+    public Long price;
+
+    @JsonProperty("LASTUPDATE")
+    public Long lastUpdate;
+
+    @JsonProperty("LASTVOLUME")
+    public Long lastVolume;
+    @JsonProperty("LASTVOLUMETO")
+    public Long lastVolumeTo;
+
+
+    @JsonProperty("VOLUME24HOUR")
+    public Long volume24Hour;
+
+    @JsonProperty("VOLUME24HOURTO")
+    public Long volume24HourTo;
+
+    @JsonProperty("CHANGEPCT24HOUR")
+    public Long changePercent24Hour;
+
         }

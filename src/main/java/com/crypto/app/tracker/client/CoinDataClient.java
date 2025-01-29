@@ -1,7 +1,7 @@
-package com.crypto.app.tracker.service;
+package com.crypto.app.tracker.client;
 
 import com.crypto.app.tracker.models.CoinData;
 
-public interface CoinRestService {
+public interface CoinDataClient {
     CoinData getCoinData(String coinTicker);
 }

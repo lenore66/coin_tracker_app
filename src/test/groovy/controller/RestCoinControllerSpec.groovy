@@ -1,3 +1,5 @@
+package controller
+
 import com.crypto.app.tracker.controller.RestCoinController
 import com.crypto.app.tracker.models.CoinData
 import com.crypto.app.tracker.service.CoinRestService
@@ -13,11 +15,12 @@ class RestCoinControllerSpec extends Specification{
   }
     def "controller is called"(){
         given:
-        def coinData = [] as CoinData
+        def coinName = "DOGE"
+        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinData
         when:
-        def result = fixture.getCoins()
+        def result = fixture.getCoins(coinName)
         then:
-        //result ==[ coinData]
-        1 * coinService.getCoinData() >> coinData
+        result ==[ coinData]
+        1 * coinService.getCoinData(coinName) >> coinData
     }
 }
