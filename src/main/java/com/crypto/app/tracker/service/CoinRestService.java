@@ -1,7 +1,8 @@
 package com.crypto.app.tracker.service;
 
-import com.crypto.app.tracker.models.CoinData;
+import com.crypto.app.tracker.models.CoinMetaMarketData;
+import com.crypto.app.tracker.models.marketdata.CoinMarketData;
 
 public interface CoinRestService {
-    CoinData getCoinData(String coinTicker);
+    CoinMetaMarketData getCoinDataFromCoinName(String coinTicker);
 }

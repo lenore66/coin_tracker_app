@@ -1,4 +1,4 @@
-package com.crypto.app.tracker.models;
+package com.crypto.app.tracker.models.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coin implements Serializable {
+public class MarketData implements Serializable {
     @JsonProperty("RAW")
-    public CoinData coinData;
+    public CoinMarketData coinMarketData;
 }
