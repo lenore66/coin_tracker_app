@@ -3,6 +3,7 @@ package com.crypto.app.tracker.models.marketdata;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class CoinMarketData implements Serializable {
     @JsonProperty("FROMSYMBOL")
     public String fromSymbol;

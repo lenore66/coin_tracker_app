@@ -5,4 +5,6 @@ import com.crypto.app.tracker.models.marketdata.CoinMarketData;
 
 public interface CoinRestService {
     CoinMetaMarketData getCoinDataFromCoinName(String coinTicker);
+
+    CoinMetaMarketData getCoinsByTicker(String coinTicker);
 }

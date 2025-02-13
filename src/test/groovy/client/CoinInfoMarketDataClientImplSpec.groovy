@@ -41,7 +41,7 @@ class CoinInfoMarketDataClientImplSpec extends  Specification {
                 .queryParam("tsym","USD").queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();
 
         when:
-        def result = fixture.getCoinDataFromCoinName(coinName)
+        def result = fixture.getCoinData(coinName)
 
         then:
 

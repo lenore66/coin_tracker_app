@@ -17,9 +17,9 @@ class RestCoinControllerSpec extends Specification{
        coinService = Mock(CoinRestService)
        fixture = [ coinService: coinService]as RestCoinController
   }
-    def "controller is called"(){
+    def "controller is called for calling a coin by the coin name"(){
         given:
-        def coinName = "DOGE"
+        def coinName = "Bitcoin"
         def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
         def coinMetaData = [coinInfo: [ metaData: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
@@ -28,5 +28,17 @@ class RestCoinControllerSpec extends Specification{
         then:
         result ==[ coinMarketMetaData]
         1 * coinService.getCoinDataFromCoinName(coinName) >> coinMarketMetaData
+    }
+    def "controller is called for calling a coin by the coin ticker"(){
+        given:
+        def coinTicker = "BTC".toString()
+        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
+        def coinMetaData = [coinInfo: [ metaData: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
+        def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
+        when:
+        def result = fixture.getCoinsByTicker(coinTicker)
+        then:
+        result ==[ coinMarketMetaData]
+        1 * coinService.getCoinsByTicker(coinTicker) >> coinMarketMetaData
     }
 }

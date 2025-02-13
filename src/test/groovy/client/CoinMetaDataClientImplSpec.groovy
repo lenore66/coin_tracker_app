@@ -28,7 +28,7 @@ class CoinMetaDataClientImplSpec extends  Specification {
         fixture = [restTemplate: mockTemplate] as CoinMetaDataClientImpl
     }
 
-    def "the coinDataClient is called and returns CoinData if api recives a ticker symbol"(){
+    def "the coinDataClient is called and returns CoinData if api recives a name of coin"(){
         given:
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
@@ -41,6 +41,26 @@ class CoinMetaDataClientImplSpec extends  Specification {
                 .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METADATA_URL_PATH).queryParam("slug", coinName.toLowerCase()).build().toUriString();
         when:
         def result = fixture.getCoinMetaData(coinName)
+
+        then:
+        1 * mockTemplate.exchange(url, HttpMethod.GET, httpEntity,  CoinMetaData.class) >> new ResponseEntity<>(coinData, HttpStatus.OK)
+        result == coinData
+    }
+    def "the coinDataClient is called and returns CoinData if api recives a ticker of coin"(){
+        given:
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.CONTENT_TYPE,X_CMC_PRO_API_KEY);
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+
+
+       def ticker = "\$BTC"
+
+        def coinData = [coinInfo: [ metaData: [ name: "bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
+        def url = UriComponentsBuilder.newInstance()
+                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METADATA_URL_PATH).queryParam("symbol", ticker).build().toUriString();
+        when:
+        def result = fixture.getCoinMetaData(ticker)
 
         then:
         1 * mockTemplate.exchange(url, HttpMethod.GET, httpEntity,  CoinMetaData.class) >> new ResponseEntity<>(coinData, HttpStatus.OK)

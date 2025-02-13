@@ -53,8 +53,14 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
         Optional<CoinMetaData> coinMetaDataOptional = null;
 
         try {
-            ResponseEntity<CoinMetaData> response =  restTemplate.exchange(buildUrl(coinName), HttpMethod.GET, httpEntity, CoinMetaData.class);
-            coinMetaDataOptional = Optional.of(response.getBody());
+            if(coinName.length() < 6 && coinName.contains("$")) {
+                ResponseEntity<CoinMetaData> response = restTemplate.exchange(buildUrlWithTicker(coinName), HttpMethod.GET, httpEntity, CoinMetaData.class);
+                coinMetaDataOptional = Optional.ofNullable(response.getBody());
+            }
+            else{
+                ResponseEntity<CoinMetaData> response = restTemplate.exchange(buildUrlWithName(coinName), HttpMethod.GET, httpEntity, CoinMetaData.class);
+                coinMetaDataOptional = Optional.ofNullable(response.getBody());
+            }
             return coinMetaDataOptional;
         } catch (Exception e) {
             // Log the error and handle it appropriately
@@ -64,9 +70,17 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 }
 
 
-    private String buildUrl(String coinName) {
+    private String buildUrlWithName(String coinName) {
         String url = UriComponentsBuilder.newInstance()
                 .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("slug", coinName.toLowerCase()).build().toUriString();
+        System.out.println(url);
+        return url;
+
+    }
+
+    private String buildUrlWithTicker(String coinName) {
+        String url = UriComponentsBuilder.newInstance()
+                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("symbol", coinName).build().toUriString();
         System.out.println(url);
         return url;
 

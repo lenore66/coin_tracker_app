@@ -26,4 +26,12 @@ public class CoinRestServiceImpl implements CoinRestService {
 
         return coinMetaMarketData;
     }
+    public CoinMetaMarketData getCoinsByTicker(String coinTicker){
+        CoinMetaMarketData coinMetaMarketData = new CoinMetaMarketData();
+
+        coinMetaMarketData.coinMetaData = coinMetaDataClient.getCoinMetaData(coinTicker);
+        coinMetaMarketData.coinMarketData = coinMarketDataClient.getCoinData(coinTicker);
+
+        return coinMetaMarketData;
+    }
 }
