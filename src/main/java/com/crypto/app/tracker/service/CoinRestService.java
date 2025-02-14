@@ -4,7 +4,7 @@ import com.crypto.app.tracker.models.CoinMetaMarketData;
 import com.crypto.app.tracker.models.marketdata.CoinMarketData;
 
 public interface CoinRestService {
-    CoinMetaMarketData getCoinDataFromCoinName(String coinTicker);
+    CoinMetaMarketData getCoinDataFromCoinName(String coinTicker, String toCurrency);
 
-    CoinMetaMarketData getCoinsByTicker(String coinTicker);
+    CoinMetaMarketData getCoinsByTicker(String coinTicker, String toCurrency);
 }

@@ -27,14 +27,14 @@ class CoinInfoRestServiceImplSpec extends Specification {
         def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
         def coinMetaData = [coinInfo: [ metadata: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
-
+        def fiatCurrency = "USD"
         when:
-        def result = fixture.getCoinDataFromCoinName(coinName)
+        def result = fixture.getCoinDataFromCoinName(coinName, fiatCurrency)
 
         then:
 
         1 * coinMetaDataClient.getCoinMetaData(coinName) >> coinMetaData
-        1 * coinDataClient.getCoinData(coinMetaData.coinInfo.metadata.symbol) >> coinData
+        1 * coinDataClient.getCoinData(coinMetaData.coinInfo.metadata.symbol, fiatCurrency) >> coinData
         result.coinMarketData == coinData
         result.coinMetaData == coinMetaData
     }
@@ -45,13 +45,15 @@ class CoinInfoRestServiceImplSpec extends Specification {
         def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
         def coinMetaData = [coinInfo: [ metaData: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
+        def fiatCurrency = "USD"
+
 
         when:
-        def result = fixture.getCoinsByTicker(coinTicker)
+        def result = fixture.getCoinsByTicker(coinTicker, fiatCurrency)
 
         then:
 
-        1 * coinDataClient.getCoinData(coinTicker) >> coinData
+        1 * coinDataClient.getCoinData(coinTicker,fiatCurrency) >> coinData
         1 * coinMetaDataClient.getCoinMetaData(coinTicker) >> coinMetaData
         result.coinMarketData == coinData
         result.coinMetaData == coinMetaData

@@ -25,14 +25,14 @@ public class CoinMarketDataClientImpl implements CoinMarketDataClient {
     RestTemplate restTemplate;
 
     @Override
-    public CoinMarketData getCoinData(String coinTicker) {
+    public CoinMarketData getCoinData(String coinTicker, String toCurrency) {
         if (coinTicker == null || coinTicker.isEmpty()) {
             throw new IllegalArgumentException("Coin name must not be null or empty");
         }
 
         CoinMarketData coinMarketDataOptional = null;
         try {
-            coinMarketDataOptional = getCoinDataOptional(coinTicker).orElse(null);
+            coinMarketDataOptional = getCoinDataOptional(coinTicker, toCurrency).orElse(null);
             System.out.println(coinMarketDataOptional);
         } catch (Exception e) {
             // Log the error and handle it appropriately
@@ -42,24 +42,24 @@ public class CoinMarketDataClientImpl implements CoinMarketDataClient {
         return coinMarketDataOptional;
     }
 
-    private String buildUrl(String coinTicker) {
+    private String buildUrl(String coinTicker, String toCurrency) {
         //TODO Add optional params to query
         //TODO add other currency options
         //TODO add exchange options
         String url = UriComponentsBuilder.newInstance()
                 .scheme(COIN_SCHEME).host(COIN_COMPARE_HOST).path(COIN_DATA_URL_PATH).queryParam("fsym",coinTicker).queryParam("e", COIN_EXCHANGE)
-                .queryParam("tsym","USD").queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();
+                .queryParam("tsym",toCurrency).queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();
         System.out.println(url);
         return url;
 
     }
-    private Optional<CoinMarketData> getCoinDataOptional(String coinTicker){
+    private Optional<CoinMarketData> getCoinDataOptional(String coinTicker, String fiatCurrency){
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         HttpEntity httpEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<MarketData> response =  restTemplate.exchange(buildUrl(coinTicker), HttpMethod.GET, httpEntity, MarketData.class);
+        ResponseEntity<MarketData> response =  restTemplate.exchange(buildUrl(coinTicker, fiatCurrency), HttpMethod.GET, httpEntity, MarketData.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
             return Optional.of(response.getBody().coinMarketData);
         } else {

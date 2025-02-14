@@ -32,7 +32,7 @@ class CoinMetaDataClientImplSpec extends  Specification {
         given:
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        headers.add(HttpHeaders.CONTENT_TYPE,X_CMC_PRO_API_KEY);
+        headers.add("X-CMC_PRO_API_KEY",X_CMC_PRO_API_KEY);
         HttpEntity httpEntity = new HttpEntity<>(headers);
 
         def coinName = "Bitcoin"
@@ -50,15 +50,14 @@ class CoinMetaDataClientImplSpec extends  Specification {
         given:
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        headers.add(HttpHeaders.CONTENT_TYPE,X_CMC_PRO_API_KEY);
+        headers.add("X-CMC_PRO_API_KEY",X_CMC_PRO_API_KEY);
         HttpEntity httpEntity = new HttpEntity<>(headers);
-
-
-       def ticker = "\$BTC"
+       def ticker = "\$BTc"
+        def fiatCurrency = "USD"
 
         def coinData = [coinInfo: [ metaData: [ name: "bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METADATA_URL_PATH).queryParam("symbol", ticker).build().toUriString();
+                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METADATA_URL_PATH).queryParam("symbol", ticker.replace("\$", "").toLowerCase()).build().toUriString();
         when:
         def result = fixture.getCoinMetaData(ticker)
 

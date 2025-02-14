@@ -23,11 +23,13 @@ class RestCoinControllerSpec extends Specification{
         def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
         def coinMetaData = [coinInfo: [ metaData: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
+        def fiatCurrency = "USD"
+
         when:
-        def result = fixture.getCoins(coinName)
+        def result = fixture.getCoins(coinName,fiatCurrency)
         then:
         result ==[ coinMarketMetaData]
-        1 * coinService.getCoinDataFromCoinName(coinName) >> coinMarketMetaData
+        1 * coinService.getCoinDataFromCoinName(coinName, fiatCurrency) >> coinMarketMetaData
     }
     def "controller is called for calling a coin by the coin ticker"(){
         given:
@@ -35,10 +37,13 @@ class RestCoinControllerSpec extends Specification{
         def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
         def coinMetaData = [coinInfo: [ metaData: [ name: "Bitcoin", symbol: "BTC", description: "crypto", logo: "http://abc.com"] as Metadata] as CoinInfo ] as CoinMetaData
         def coinMarketMetaData = [coinMetaData: coinMetaData, coinMarketData: coinData] as CoinMetaMarketData
+        def fiatCurrency = "USD"
+
+
         when:
-        def result = fixture.getCoinsByTicker(coinTicker)
+        def result = fixture.getCoinsByTicker(coinTicker, fiatCurrency)
         then:
         result ==[ coinMarketMetaData]
-        1 * coinService.getCoinsByTicker(coinTicker) >> coinMarketMetaData
+        1 * coinService.getCoinsByTicker(coinTicker ,fiatCurrency) >> coinMarketMetaData
     }
 }

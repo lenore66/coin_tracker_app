@@ -43,7 +43,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
     private Optional<CoinMetaData> getCoinDataOptional(String coinName) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        headers.add(HttpHeaders.CONTENT_TYPE,X_CMC_PRO_API_KEY);
+        headers.add("X-CMC_PRO_API_KEY",X_CMC_PRO_API_KEY);
         HttpEntity httpEntity = new HttpEntity<>(headers);
 
         if (coinName == null || coinName.isEmpty()) {
@@ -53,7 +53,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
         Optional<CoinMetaData> coinMetaDataOptional = null;
 
         try {
-            if(coinName.length() < 6 && coinName.contains("$")) {
+            if(coinName.contains("$")) {
                 ResponseEntity<CoinMetaData> response = restTemplate.exchange(buildUrlWithTicker(coinName), HttpMethod.GET, httpEntity, CoinMetaData.class);
                 coinMetaDataOptional = Optional.ofNullable(response.getBody());
             }
@@ -72,7 +72,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 
     private String buildUrlWithName(String coinName) {
         String url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("slug", coinName.toLowerCase()).build().toUriString();
+                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("slug", coinName.toLowerCase().strip()).build().toUriString();
         System.out.println(url);
         return url;
 
@@ -80,7 +80,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 
     private String buildUrlWithTicker(String coinName) {
         String url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("symbol", coinName).build().toUriString();
+                .scheme(COIN_SCHEME).host(COIN_MARKET_CAP_HOST).path(COIN_METATDATA_URL_PATH).queryParam("symbol", coinName.replace("$","").toLowerCase()).build().toUriString();
         System.out.println(url);
         return url;
 

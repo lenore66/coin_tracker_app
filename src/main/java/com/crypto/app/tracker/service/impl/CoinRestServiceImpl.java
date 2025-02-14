@@ -18,19 +18,19 @@ public class CoinRestServiceImpl implements CoinRestService {
     @Autowired
     private CoinMetaDataClient coinMetaDataClient;
 
-    public CoinMetaMarketData getCoinDataFromCoinName(String coinName){
+    public CoinMetaMarketData getCoinDataFromCoinName(String coinName, String toCurrency){
         CoinMetaMarketData coinMetaMarketData = new CoinMetaMarketData();
 
         coinMetaMarketData.coinMetaData = coinMetaDataClient.getCoinMetaData(coinName);
-        coinMetaMarketData.coinMarketData = coinMarketDataClient.getCoinData( coinMetaMarketData.coinMetaData.coinInfo.metadata.symbol);
+        coinMetaMarketData.coinMarketData = coinMarketDataClient.getCoinData( coinMetaMarketData.coinMetaData.coinInfo.metadata.symbol, toCurrency);
 
         return coinMetaMarketData;
     }
-    public CoinMetaMarketData getCoinsByTicker(String coinTicker){
+    public CoinMetaMarketData getCoinsByTicker(String coinTicker, String toCurrency){
         CoinMetaMarketData coinMetaMarketData = new CoinMetaMarketData();
 
         coinMetaMarketData.coinMetaData = coinMetaDataClient.getCoinMetaData(coinTicker);
-        coinMetaMarketData.coinMarketData = coinMarketDataClient.getCoinData(coinTicker);
+        coinMetaMarketData.coinMarketData = coinMarketDataClient.getCoinData(coinTicker,toCurrency);
 
         return coinMetaMarketData;
     }

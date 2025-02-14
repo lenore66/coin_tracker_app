@@ -30,6 +30,7 @@ class CoinInfoMarketDataClientImplSpec extends  Specification {
     }
     def "the coinDataClient is called and returns CoinData"(){
         given:
+        def currency = "USD"
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         HttpEntity httpEntity  = new HttpEntity<>(headers);
@@ -38,10 +39,10 @@ class CoinInfoMarketDataClientImplSpec extends  Specification {
         def coinData =[ coinMarketData: [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData ] as MarketData
         def coinUrl = UriComponentsBuilder.newInstance()
                 .scheme(COIN_SCHEME).host(COIN_COMPARE_HOST).path(COIN_DATA_URL_PATH).queryParam("fsym", coinName).queryParam("e", COIN_EXCHANGE)
-                .queryParam("tsym","USD").queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();
+                .queryParam("tsym",currency).queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();
 
         when:
-        def result = fixture.getCoinData(coinName)
+        def result = fixture.getCoinData(coinName, currency)
 
         then:
 
