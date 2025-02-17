@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
 
-import static com.crypto.app.tracker.constants.CoinAPIConstants.*;
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.*;
 
 @Component
 public class CoinMarketDataClientImpl implements CoinMarketDataClient {
@@ -44,8 +44,9 @@ public class CoinMarketDataClientImpl implements CoinMarketDataClient {
 
     private String buildUrl(String coinTicker, String toCurrency) {
         //TODO Add optional params to query
-        //TODO add other currency options
-        //TODO add exchange options
+        if(coinTicker.contains("$")){
+            coinTicker = coinTicker.replace("$","");
+        }
         String url = UriComponentsBuilder.newInstance()
                 .scheme(COIN_SCHEME).host(COIN_COMPARE_HOST).path(COIN_DATA_URL_PATH).queryParam("fsym",coinTicker).queryParam("e", COIN_EXCHANGE)
                 .queryParam("tsym",toCurrency).queryParam("api_key", COIN_COMPARE_API_KEY).build().toUriString();

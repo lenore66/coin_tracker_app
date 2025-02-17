@@ -23,17 +23,17 @@ public class RestCoinController {
 @Autowired
 private  CoinRestService coinService;
 
-    @GetMapping("/getCoinByNameData/{coinName}/{fiatCurrency")
-    public ArrayList<CoinMetaMarketData> getCoins(@PathVariable String coinName, @PathVariable String fiatCurrency){
-        ArrayList<CoinMetaMarketData> coinDataList = new ArrayList<>();
-        coinDataList.add(coinService.getCoinDataFromCoinName(coinName, fiatCurrency));
+    @GetMapping("/getCoinByNameData/{coinName}/{fiatCurrency}")
+    public CoinMetaMarketData getCoins(@PathVariable String coinName, @PathVariable String fiatCurrency){
+        CoinMetaMarketData coinDataList = new CoinMetaMarketData();
+       coinService.getCoinDataFromCoinName(coinName, fiatCurrency);
         System.out.println(coinDataList);
         return coinDataList;
     }
     @GetMapping("/getCoinByTickerData/{coinTicker}/{fiatCurrency}")
-    public ArrayList<CoinMetaMarketData> getCoinsByTicker(@PathVariable String coinTicker, @PathVariable String fiatCurrency){
-        ArrayList<CoinMetaMarketData> coinDataList = new ArrayList<>();
-        coinDataList.add(coinService.getCoinsByTicker(coinTicker, fiatCurrency));
+    public CoinMetaMarketData getCoinsByTicker(@PathVariable String coinTicker, @PathVariable String fiatCurrency){
+        CoinMetaMarketData coinDataList = new CoinMetaMarketData();
+       coinService.getCoinsByTicker(coinTicker, fiatCurrency);
         System.out.println(coinDataList);
         return coinDataList;
     }

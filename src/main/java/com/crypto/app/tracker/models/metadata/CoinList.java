@@ -7,12 +7,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.List;
+
 @Data
 @Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class CoinInfo {
-    @JsonProperty("1")
-    public Metadata metadata;
+public class CoinList {
+
+    List<Coin> coins;
 }

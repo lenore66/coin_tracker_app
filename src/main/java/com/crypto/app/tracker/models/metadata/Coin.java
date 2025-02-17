@@ -12,8 +12,11 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class CoinMetaData {
-    @JsonProperty("data")
-    public CoinInfo coinInfo;
-
+public class Coin {
+    @JsonProperty("id")
+    public String coinId;
+    @JsonProperty("name")
+    public String coinName;
+    @JsonProperty("symbol")
+    public String symbol;
 }

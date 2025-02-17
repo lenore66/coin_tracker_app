@@ -1,7 +1,7 @@
 package com.crypto.app.tracker.client;
 
-import com.crypto.app.tracker.models.metadata.CoinMetaData;
+import com.crypto.app.tracker.models.metadata.Metadata;
 
 public interface CoinMetaDataClient {
-    CoinMetaData getCoinMetaData(String coinName);
+    Metadata getCoinMetaData(String coinName);
 }

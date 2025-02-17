@@ -1,7 +1,7 @@
 package com.crypto.app.tracker.models;
 
 import com.crypto.app.tracker.models.marketdata.CoinMarketData;
-import com.crypto.app.tracker.models.metadata.CoinMetaData;
+import com.crypto.app.tracker.models.metadata.Metadata;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,5 +15,5 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode(callSuper = false)
 public class CoinMetaMarketData {
     public CoinMarketData coinMarketData;
-    public CoinMetaData coinMetaData;
+    public Metadata coinMetaData;
 }

@@ -3,8 +3,7 @@ package controller
 import com.crypto.app.tracker.controller.RestCoinController
 import com.crypto.app.tracker.models.CoinMetaMarketData
 import com.crypto.app.tracker.models.marketdata.CoinMarketData
-import com.crypto.app.tracker.models.metadata.CoinInfo
-import com.crypto.app.tracker.models.metadata.CoinMetaData
+
 import com.crypto.app.tracker.models.metadata.Metadata
 import com.crypto.app.tracker.service.CoinRestService
 import spock.lang.Specification
@@ -28,7 +27,7 @@ class RestCoinControllerSpec extends Specification{
         when:
         def result = fixture.getCoins(coinName,fiatCurrency)
         then:
-        result ==[ coinMarketMetaData]
+        result == coinMarketMetaData
         1 * coinService.getCoinDataFromCoinName(coinName, fiatCurrency) >> coinMarketMetaData
     }
     def "controller is called for calling a coin by the coin ticker"(){
@@ -43,7 +42,7 @@ class RestCoinControllerSpec extends Specification{
         when:
         def result = fixture.getCoinsByTicker(coinTicker, fiatCurrency)
         then:
-        result ==[ coinMarketMetaData]
+        result == coinMarketMetaData
         1 * coinService.getCoinsByTicker(coinTicker ,fiatCurrency) >> coinMarketMetaData
     }
 }

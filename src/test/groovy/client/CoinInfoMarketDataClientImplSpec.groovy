@@ -13,11 +13,11 @@ import org.springframework.web.util.UriComponentsBuilder
 import spock.lang.Specification
 import org.springframework.http.HttpStatus
 
-import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_COMPARE_API_KEY
-import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_DATA_URL_PATH
-import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_EXCHANGE
-import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_COMPARE_HOST
-import static com.crypto.app.tracker.constants.CoinAPIConstants.COIN_SCHEME
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_COMPARE_API_KEY
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_DATA_URL_PATH
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_EXCHANGE
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_COMPARE_HOST
+import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_SCHEME
 
 class CoinInfoMarketDataClientImplSpec extends  Specification {
     def restTemplate;

@@ -4,8 +4,7 @@ import com.crypto.app.tracker.client.CoinMarketDataClient
 import com.crypto.app.tracker.client.CoinMetaDataClient
 import com.crypto.app.tracker.models.CoinMetaMarketData
 import com.crypto.app.tracker.models.marketdata.CoinMarketData
-import com.crypto.app.tracker.models.metadata.CoinInfo
-import com.crypto.app.tracker.models.metadata.CoinMetaData
+
 import com.crypto.app.tracker.models.metadata.Metadata
 import com.crypto.app.tracker.service.impl.CoinRestServiceImpl
 import spock.lang.Specification

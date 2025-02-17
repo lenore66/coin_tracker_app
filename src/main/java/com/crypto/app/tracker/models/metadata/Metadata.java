@@ -7,12 +7,16 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.List;
+
 @Data
 @Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Metadata {
+    @JsonProperty("id")
+    public String id;
     @JsonProperty("name")
     public String name;
     @JsonProperty("symbol")
@@ -20,6 +24,8 @@ public class Metadata {
     @JsonProperty("logo")
     public String logo;
     @JsonProperty("description")
-    public String description;
+    public Description description;
+    @JsonProperty("ticker")
+    public List<Ticker> tickers;
 
 }
