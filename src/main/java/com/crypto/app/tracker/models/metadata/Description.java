@@ -1,18 +1,16 @@
 package com.crypto.app.tracker.models.metadata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 @Data
-@Jacksonized
+@JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Description {
     @JsonProperty( "en")
-    public String englishDescription;
+    private String englishDescription;
 }

@@ -25,15 +25,14 @@ private  CoinRestService coinService;
 
     @GetMapping("/getCoinByNameData/{coinName}/{fiatCurrency}")
     public CoinMetaMarketData getCoins(@PathVariable String coinName, @PathVariable String fiatCurrency){
-        CoinMetaMarketData coinDataList = new CoinMetaMarketData();
-       coinService.getCoinDataFromCoinName(coinName, fiatCurrency);
+        CoinMetaMarketData  coinDataList = coinService.getCoinDataFromCoinName(coinName, fiatCurrency);
         System.out.println(coinDataList);
         return coinDataList;
     }
     @GetMapping("/getCoinByTickerData/{coinTicker}/{fiatCurrency}")
     public CoinMetaMarketData getCoinsByTicker(@PathVariable String coinTicker, @PathVariable String fiatCurrency){
-        CoinMetaMarketData coinDataList = new CoinMetaMarketData();
-       coinService.getCoinsByTicker(coinTicker, fiatCurrency);
+
+        CoinMetaMarketData coinDataList =  coinService.getCoinsByTicker(coinTicker, fiatCurrency);
         System.out.println(coinDataList);
         return coinDataList;
     }

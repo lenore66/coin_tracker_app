@@ -1,29 +1,27 @@
 package com.crypto.app.tracker.models.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 import java.io.Serializable;
 
 @Data
-@Jacksonized
+@JsonSerialize(include = JsonSerialize.Inclusion.ALWAYS)
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class CoinMarketData implements Serializable {
     @JsonProperty("FROMSYMBOL")
-    public String fromSymbol;
+    private String fromSymbol;
     @JsonProperty("TOSYMBOL")
-    public String toSymbol;
+    private String toSymbol;
 
     @JsonProperty("FLAGS")
-    public String flags;
+    private String flags;
     @JsonProperty("PRICE")
-    public Long price;
+    private Long price;
 
     @JsonProperty("LASTUPDATE")
     public Long lastUpdate;

@@ -3,9 +3,9 @@ package com.crypto.app.tracker.client.impl;
 import com.crypto.app.tracker.client.CoinMetaDataClient;
 
 import com.crypto.app.tracker.models.metadata.Coin;
-import com.crypto.app.tracker.models.metadata.CoinList;
 import com.crypto.app.tracker.models.metadata.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_SCHEME;
@@ -52,14 +53,12 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 
         try {
             if (coinName.contains("$")) {
-                
-                
-                String id = validateCoinWithTicker(coinName);
-                ResponseEntity<Metadata> response = restTemplate.exchange(buildUrl(id), HttpMethod.GET, getEntity(), Metadata.class);
+            System.out.println(coinName);;
+
+                ResponseEntity<Metadata> response = restTemplate.exchange(buildUrl(validateCoinWithTicker(coinName.toLowerCase())), HttpMethod.GET, getEntity(), Metadata.class);
                 coinMetaDataOptional = Optional.ofNullable(response.getBody());
             } else {
-                String id = validateCoinWitName(coinName);
-                ResponseEntity<Metadata> response = restTemplate.exchange(buildUrl(id), HttpMethod.GET, getEntity(), Metadata.class);
+                ResponseEntity<Metadata> response = restTemplate.exchange(buildUrl(validateCoinWitName(coinName.toLowerCase())), HttpMethod.GET, getEntity(), Metadata.class);
                 coinMetaDataOptional = Optional.ofNullable(response.getBody());
             }
             return coinMetaDataOptional;
@@ -70,39 +69,72 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 
     }
 
-    private String buildUrl(String coinName) {
-        String url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_GECKO_HOST).path(COIN_GECKO_PATH_METADATA).queryParam("id", coinName.toLowerCase().strip()).build().toUriString();
-        System.out.println(url);
-        return url;
-    }
-    private String validateCoinWitName(String coinName) {
 
+    private String validateCoinWitName(String coinName) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         headers.add("x-cg-demo-api-key", COIN_GECKO_KEY);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
         String url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_GECKO_HOST).path(COIN_GECKO_PATH_LIST).build().toUriString();
-        ResponseEntity<CoinList> response = restTemplate.exchange(url, HttpMethod.GET, getEntity(), CoinList.class);
+                .scheme(COIN_SCHEME)
+                .host(COIN_GECKO_HOST)
+                .path(COIN_GECKO_PATH_LIST)
+                .build()
+                .toUriString();
 
-        Coin validCoin = response.getBody().getCoins().stream().filter(coin -> coin.getCoinName().contains(coinName)).findAny().get();
-        return validCoin.getCoinId();
+        ResponseEntity<List<Coin>> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Coin>>() {});
 
+        System.out.println(response.getBody());
+        if (response.getBody() == null) {
+            throw new RuntimeException("No coins found in the response.");
+        }
+        List<Coin> coinList = response.getBody().stream().toList();
+
+        Optional<Coin> matchingCoin = response.getBody().stream()
+                .filter(coin -> coin != null && coin.getCoinName() != null && coin.getCoinName().toLowerCase().equals(coinName.toLowerCase()))
+                .findAny();
+
+
+        return matchingCoin
+                .map(Coin::getCoinName)
+                .orElseThrow(() -> new RuntimeException("No coin found with ticker: " + coinName));
     }
-
     private String validateCoinWithTicker(String coinName) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         headers.add("x-cg-demo-api-key", COIN_GECKO_KEY);
-        HttpEntity httpEntity = new HttpEntity<>(headers);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+
         String url = UriComponentsBuilder.newInstance()
-                .scheme(COIN_SCHEME).host(COIN_GECKO_HOST).path(COIN_GECKO_PATH_LIST).build().toUriString();
-        ResponseEntity<CoinList> response = restTemplate.exchange(url, HttpMethod.GET, getEntity(), CoinList.class);
+                .scheme(COIN_SCHEME)
+                .host(COIN_GECKO_HOST)
+                .path(COIN_GECKO_PATH_LIST)
+                .build()
+                .toUriString();
 
-        Coin validCoin = response.getBody().getCoins().stream().filter(coin -> coin.getCoinId().contains(coinName)).findAny().get();
-        return validCoin.getCoinId();
+        ResponseEntity<List<Coin>> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Coin>>() {});
+        if (response.getBody() == null) {
+            throw new RuntimeException("No coins found in the response.");
+        }
+        String sanitizedCoinName = coinName.replace("$", "").toLowerCase();
 
+        Optional<Coin> matchingCoin = response.getBody().stream()
+                .filter(coin -> coin != null && coin.getCoinId() != null && coin.getSymbol().equals(sanitizedCoinName))
+                .findAny();
+
+        return matchingCoin
+                .map(Coin::getCoinId)
+                .orElseThrow(() -> new RuntimeException("No coin found with ticker: " + coinName));
+
+    }
+
+    private String buildUrl(String coinName) {
+
+        String url = UriComponentsBuilder.newInstance()
+                .scheme(COIN_SCHEME).host(COIN_GECKO_HOST).path(COIN_GECKO_PATH_METADATA.concat("/").concat(coinName.toLowerCase())).build().toUriString();
+        System.out.println(url);
+        return url;
     }
 
     private  HttpEntity getEntity(){

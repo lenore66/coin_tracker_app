@@ -62,7 +62,7 @@ public class CoinMarketDataClientImpl implements CoinMarketDataClient {
 
         ResponseEntity<MarketData> response =  restTemplate.exchange(buildUrl(coinTicker, fiatCurrency), HttpMethod.GET, httpEntity, MarketData.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            return Optional.of(response.getBody().coinMarketData);
+            return Optional.of(response.getBody().getCoinMarketData());
         } else {
             return Optional.empty();
         }

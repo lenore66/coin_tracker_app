@@ -29,7 +29,7 @@ dependencies {
 	implementation 'org.springframework:spring-web:6.2.2'
 	testImplementation 'io.projectreactor:reactor-test:3.7.2'
 	implementation 'io.projectreactor:reactor-core:3.7.2'
-
+	annotationProcessor 'org.projectlombok:lombok:1.18.36'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
 	compileOnly 'org.projectlombok:lombok:1.18.36'
@@ -39,6 +39,11 @@ dependencies {
 	testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
 	implementation 'org.apache.groovy:groovy-all:5.0.0-alpha-12'
 	implementation 'org.apache.groovy:groovy-test:5.0.0-alpha-12'
+
+	//Mapstruct
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+
 
 
 }

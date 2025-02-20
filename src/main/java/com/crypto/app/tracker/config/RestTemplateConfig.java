@@ -1,4 +1,4 @@
-package com.crypto.app.tracker;
+package com.crypto.app.tracker.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
