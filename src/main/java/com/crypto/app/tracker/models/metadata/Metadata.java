@@ -2,6 +2,7 @@ package com.crypto.app.tracker.models.metadata;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
@@ -24,7 +25,7 @@ public class Metadata {
     private String logo;
     @JsonProperty("description")
     private Description description;
-    @JsonProperty("ticker")
+    @JsonProperty("tickers")
     private List<Ticker> tickers;
 
 }

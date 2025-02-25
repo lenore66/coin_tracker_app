@@ -2,9 +2,9 @@ package service
 
 import com.crypto.app.tracker.client.CoinMarketDataClient
 import com.crypto.app.tracker.client.CoinMetaDataClient
-import com.crypto.app.tracker.mapper.CoinMarkerMetadataMapper
+import com.crypto.app.tracker.mapper.CoinMarkertMetadataMapper
 import com.crypto.app.tracker.models.CoinMetaMarketData
-import com.crypto.app.tracker.models.marketdata.CoinMarketData
+import com.crypto.app.tracker.models.marketdata.MarketData
 import com.crypto.app.tracker.models.metadata.Description
 import com.crypto.app.tracker.models.metadata.Metadata
 import com.crypto.app.tracker.models.metadata.Ticker
@@ -20,14 +20,14 @@ class CoinInfoRestServiceImplSpec extends Specification {
     def setup(){
         coinDataClient = Mock(CoinMarketDataClient)
         coinMetaDataClient = Mock(CoinMetaDataClient)
-        coinMarketMetaMapper = Mock(CoinMarkerMetadataMapper)
-        fixture = [coinMarketDataClient: coinDataClient, coinMetaDataClient: coinMetaDataClient, coinMarkerMetadataMapper: coinMarketMetaMapper] as CoinRestServiceImpl
+        coinMarketMetaMapper = Mock(CoinMarkertMetadataMapper)
+        fixture = [coinMarketDataClient: coinDataClient, coinMetaDataClient: coinMetaDataClient, coinMarketMetadataMapper: coinMarketMetaMapper] as CoinRestServiceImpl
     }
     def "the coinDataClient is called and gets the ticker symbol if a name of a coin is provided and then sends ticker"(){
         given:
 
         def coinName = "Bitcoin"
-        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
+        def coinData =[current_price: 1.00, market_cap:1.2, fully_diluted_valuation:99.52, total_volume:3.637,low_24h:171135630 ] as MarketData
         def description = [englishDescription: "yay"] as Description
         def tickers = [trust_score: "green", tickersBase: "ASEFS"] as Ticker
         def coinMetaData = [
@@ -54,7 +54,7 @@ class CoinInfoRestServiceImplSpec extends Specification {
         given:
 
         def coinTicker = "BTC"
-        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
+        def coinData =[current_price: 1.00, market_cap:1.2, fully_diluted_valuation:99.52, total_volume:3.637,low_24h:171135630 ] as MarketData
         def description = [englishDescription: "yay"] as Description
         def tickers = [trust_score: "green", tickersBase: "ASEFS"] as Ticker
         def coinMetaData = [

@@ -2,7 +2,7 @@ package controller
 
 import com.crypto.app.tracker.controller.RestCoinController
 import com.crypto.app.tracker.models.CoinMetaMarketData
-import com.crypto.app.tracker.models.marketdata.CoinMarketData
+import com.crypto.app.tracker.models.marketdata.MarketData
 import com.crypto.app.tracker.models.metadata.Description
 import com.crypto.app.tracker.models.metadata.Metadata
 import com.crypto.app.tracker.models.metadata.Ticker
@@ -21,7 +21,7 @@ class RestCoinControllerSpec extends Specification{
     def "controller is called for calling a coin by the coin name"(){
         given:
         def coinName = "Bitcoin"
-        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
+        def coinData =[current_price: 1.00, market_cap:1.2, fully_diluted_valuation:99.52, total_volume:3.637,low_24h:171135630 ] as MarketData
         def description = [englishDescription: "yay"] as Description
         def tickers = [trust_score: "green", tickersBase: "ASEFS"] as Ticker
         def coinMetaData = [
@@ -42,7 +42,7 @@ class RestCoinControllerSpec extends Specification{
     def "controller is called for calling a coin by the coin ticker"(){
         given:
         def coinTicker = "BTC".toString()
-        def coinData = [usd: 1.00, usdMarketCap:1.2, usd24hVolume:99.52, usd24hChange:3.637,lastUpdated:171135630] as CoinMarketData
+        def coinData =[current_price: 1.00, market_cap:1.2, fully_diluted_valuation:99.52, total_volume:3.637,low_24h:171135630 ] as MarketData
         def description = [englishDescription: "yay"] as Description
         def tickers = [trust_score: "green", tickersBase: "ASEFS"] as Ticker
         def coinMetaData = [

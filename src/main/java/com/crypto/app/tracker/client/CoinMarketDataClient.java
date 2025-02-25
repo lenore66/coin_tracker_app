@@ -1,7 +1,7 @@
 package com.crypto.app.tracker.client;
 
-import com.crypto.app.tracker.models.marketdata.CoinMarketData;
+import com.crypto.app.tracker.models.marketdata.MarketData;
 
 public interface CoinMarketDataClient {
-    CoinMarketData getCoinData(String coinTicker, String toCurrency);
+    MarketData getCoinData(String coinTicker, String toCurrency);
 }

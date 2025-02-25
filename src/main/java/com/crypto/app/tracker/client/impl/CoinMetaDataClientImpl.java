@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.crypto.app.tracker.constants.CoinMarketApiConstants.COIN_SCHEME;
@@ -36,7 +35,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
         Metadata coinMarketDataOptional = null;
         try {
             coinMarketDataOptional = getCoinDataOptional(coinName).orElse(null);
-            System.out.println(coinMarketDataOptional);
+
         } catch (Exception e) {
             // Log the error and handle it appropriately
             throw new RuntimeException("Failed to fetch coin data for " + coinName, e);
@@ -61,6 +60,7 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
                 ResponseEntity<Metadata> response = restTemplate.exchange(buildUrl(validateCoinWitName(coinName.toLowerCase())), HttpMethod.GET, getEntity(), Metadata.class);
                 coinMetaDataOptional = Optional.ofNullable(response.getBody());
             }
+
             return coinMetaDataOptional;
         } catch (Exception e) {
             // Log the error and handle it appropriately
@@ -85,7 +85,6 @@ public class CoinMetaDataClientImpl implements CoinMetaDataClient {
 
         ResponseEntity<List<Coin>> response = restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<Coin>>() {});
 
-        System.out.println(response.getBody());
         if (response.getBody() == null) {
             throw new RuntimeException("No coins found in the response.");
         }
