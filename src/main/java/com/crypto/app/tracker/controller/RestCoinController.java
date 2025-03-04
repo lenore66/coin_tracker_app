@@ -4,6 +4,7 @@ import com.crypto.app.tracker.models.CoinMetaMarketData;
 import com.crypto.app.tracker.service.CoinRestService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,13 +23,14 @@ public class RestCoinController {
 
 @Autowired
 private  CoinRestService coinService;
-
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getCoinByNameData/{coinName}/{fiatCurrency}")
     public CoinMetaMarketData getCoins(@PathVariable String coinName, @PathVariable String fiatCurrency){
         CoinMetaMarketData  coinDataList = coinService.getCoinDataFromCoinName(coinName, fiatCurrency);
         System.out.println(coinDataList);
         return coinDataList;
     }
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/getCoinByTickerData/{coinTicker}/{fiatCurrency}")
     public CoinMetaMarketData getCoinsByTicker(@PathVariable String coinTicker, @PathVariable String fiatCurrency){
 
